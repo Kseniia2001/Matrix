@@ -44,5 +44,12 @@ int main() {
     std::cout << "Matrix*vector" << "\n";
     for (int i = 0; i < vec_result.size(); i++)
         std::cout << vec_result[i] << " ";
+    std::cout << "\n";
+
+
+    SparseMatrix multi_matrix = matrix1 * matrix2;
+
+    std::cout << "Multi_matrix" << "\n";
+    multi_matrix.print();
 
 }
