@@ -7,9 +7,9 @@ SparseMatrix::SparseMatrix(int r, int c) :rows(r), cols(c) {
 }
 
 void SparseMatrix::addElement(int row, int col, double val) {
-  /*  if (row < 0 || row >= rows || col < 0 || col >= cols) {
+   if (row < 0 || row >= rows || col < 0 || col >= cols) {
         throw std::out_of_range("Индекс выходит за пределы матрицы");
-    }*/
+    }
     if (val != 0) {
         for (int i = IA[row]; i < IA[row + 1]; ++i) {
             if (JA[i] == col) {
@@ -24,6 +24,40 @@ void SparseMatrix::addElement(int row, int col, double val) {
         value.insert(value.begin() + insertPos, val);
         JA.insert(JA.begin() + insertPos, col);
     }
+}
+
+SparseMatrix SparseMatrix::operator+(const SparseMatrix& matrix) {
+    if (rows != matrix.rows || cols != matrix.cols) {
+        throw std::invalid_argument("Размеры матриц не совпадают");
+    }
+
+    SparseMatrix result(rows, cols);
+
+    for (int i = 0; i < rows; ++i) {
+        int row_start_1 = IA[i], row_next_1 = IA[i + 1];
+        int row_start_2 = matrix.IA[i], row_next_2 = matrix.IA[i + 1];
+
+        while (row_start_1 < row_next_1 || row_start_2 < row_next_2) {
+            if (row_start_1 < row_next_1 && (row_start_2 >= row_next_2 || JA[row_start_1] < matrix.JA[row_start_2])) {
+                result.addElement(i, JA[row_start_1], value[row_start_1]);
+                ++row_start_1;
+            }
+            else if (row_start_2 < row_next_2 && (row_start_1 >= row_next_1 || matrix.JA[row_start_2] < JA[row_start_1])) {
+                result.addElement(i, matrix.JA[row_start_2], matrix.value[row_start_2]);
+                ++row_start_2;
+            }
+            else {
+                double sum = value[row_start_1] + matrix.value[row_start_2];
+                if (sum != 0) {
+                    result.addElement(i, JA[row_start_1], sum);
+                }
+                ++row_start_1;
+                ++row_start_2;
+            }
+        }
+    }
+
+    return result;
 }
 
 
