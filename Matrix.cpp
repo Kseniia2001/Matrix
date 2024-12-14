@@ -60,6 +60,42 @@ SparseMatrix SparseMatrix::operator+(const SparseMatrix& matrix) {
     return result;
 }
 
+SparseMatrix SparseMatrix::operator-(const SparseMatrix& matrix) {
+    if (rows != matrix.rows || cols != matrix.cols) {
+        throw std::invalid_argument("Размеры матриц не совпадают");
+    }
+
+    SparseMatrix result(rows, cols);
+
+    for (int i = 0; i < rows; ++i) {
+        int row_start_1 = IA[i], row_next_1 = IA[i + 1];
+        int row_start_2 = matrix.IA[i], row_next_2 = matrix.IA[i + 1];
+
+        while (row_start_1 < row_next_1 || row_start_2 < row_next_2) {
+            if (row_start_1 < row_next_1 && (row_start_2 >= row_next_2 || JA[row_start_1] < matrix.JA[row_start_2])) {
+                result.addElement(i, JA[row_start_1], value[row_start_1]);
+                ++row_start_1;
+            }
+            else if (row_start_2 < row_next_2 && (row_start_1 >= row_next_1 || matrix.JA[row_start_2] < JA[row_start_1])) {
+                result.addElement(i, matrix.JA[row_start_2], -matrix.value[row_start_2]);
+                ++row_start_2;
+            }
+            else {
+                double sum = value[row_start_1] - matrix.value[row_start_2];
+                if (sum != 0) {
+                    result.addElement(i, JA[row_start_1], sum);
+                }
+                ++row_start_1;
+                ++row_start_2;
+            }
+        }
+    }
+
+    return result;
+}
+
+
+
 
 void SparseMatrix::print() {
     for (int i = 0; i < rows; ++i) {
