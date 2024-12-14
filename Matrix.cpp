@@ -95,7 +95,21 @@ SparseMatrix SparseMatrix::operator-(const SparseMatrix& matrix) {
 }
 
 
+ std::vector<double> SparseMatrix::operator*(const std::vector<double>& vec) {
+     if (cols != vec.size()) {
+         throw std::invalid_argument("Размер вектора не соответствует количеству столбцов матрицы");
+     }
 
+     std::vector<double> result(rows, 0.0);
+
+     for (int i = 0; i < rows; ++i) {
+         for (int j = IA[i]; j < IA[i + 1]; ++j) {
+             result[i] += value[j] * vec[JA[j]];
+         }
+     }
+
+     return result;
+}
 
 void SparseMatrix::print() {
     for (int i = 0; i < rows; ++i) {

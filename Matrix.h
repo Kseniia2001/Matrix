@@ -11,4 +11,5 @@ public:
 	void print();//вывод матрицы
 	SparseMatrix operator+(const SparseMatrix& matrix); //сложение матриц
 	SparseMatrix operator-(const SparseMatrix& matrix); //вычитание матриц
+	std::vector<double> operator*(const std::vector<double>& vec); //умножение матрицы на вектор
 };

@@ -32,4 +32,17 @@ int main() {
     std::cout << "Diff_matrix" << "\n";
     diff_matrix.print();
 
+    std::vector<double> vec = { 1, 2, 3 };
+
+    std::cout << "Vector" << "\n";
+    for (int i = 0; i < vec.size(); i++)
+        std::cout << vec[i] << " ";
+    std::cout << "\n";
+
+    std::vector<double> vec_result = matrix1 * vec;
+
+    std::cout << "Matrix*vector" << "\n";
+    for (int i = 0; i < vec_result.size(); i++)
+        std::cout << vec_result[i] << " ";
+
 }
