@@ -123,6 +123,17 @@ SparseMatrix SparseMatrix::operator*(const SparseMatrix& matrix) {
     return result;
 }
 
+SparseMatrix SparseMatrix::operator*(double num) {
+    SparseMatrix result(rows, cols);
+    result.IA = IA;
+    result.JA = JA;
+    for (int i = 0; i < value.size(); ++i) {
+        result.value.push_back(value[i] * num);
+    }
+    return result;
+}
+
+
 
  std::vector<double> SparseMatrix::operator*(const std::vector<double>& vec) {
      if (cols != vec.size()) {

@@ -52,4 +52,10 @@ int main() {
     std::cout << "Multi_matrix" << "\n";
     multi_matrix.print();
 
+
+    SparseMatrix matrix_num = matrix1 * 2;
+
+    std::cout << "Matrix_num" << "\n";
+    matrix_num.print();
+
 }
